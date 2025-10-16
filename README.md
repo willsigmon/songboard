@@ -23,7 +23,9 @@ Songboard keeps every music link you copy ready for everyone. Grab a track from 
 > Requires macOS with Python 3 (preinstalled on current macOS versions).
 
 - Prefer a packaged download? Grab the Gumroad bundle: [Songboard on Gumroad](https://willsigmon.gumroad.com/l/songboard). It ships with the script and step-by-step install guide.
-- Want a direct zip? Always up-to-date download: [songboard-macos.zip](https://github.com/willsigmon/songboard/releases/download/bundle/songboard-macos.zip).
+- Want a direct download? Latest assets live on GitHub Releases:
+  - DMG (ready to mount): [songboard-macos.dmg](https://github.com/willsigmon/songboard/releases/download/bundle/songboard-macos.dmg)
+  - ZIP (raw files): [songboard-macos.zip](https://github.com/willsigmon/songboard/releases/download/bundle/songboard-macos.zip)
 
 ```bash
 # 1. Drop the watcher script on your machine

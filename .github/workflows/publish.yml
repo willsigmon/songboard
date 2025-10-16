@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -19,11 +19,11 @@ jobs:
       - name: Build distribution bundle
         run: |
           set -euo pipefail
-          mkdir -p build
-          cp songlink_clipboard_watcher.py dist/INSTALLATION.md build/
-          pushd build >/dev/null
-          zip -r songboard-macos.zip songlink_clipboard_watcher.py INSTALLATION.md
-          popd >/dev/null
+          mkdir -p build stage
+          cp songlink_clipboard_watcher.py dist/INSTALLATION.md stage/
+          (cd stage && zip -r ../build/songboard-macos.zip songlink_clipboard_watcher.py INSTALLATION.md)
+          hdiutil create -srcfolder stage -volname "Songboard" -fs HFS+ build/songboard-macos.dmg
+          rm -rf stage
 
       - name: Publish GitHub release
         uses: ncipollo/release-action@v1
@@ -35,4 +35,4 @@ jobs:
           prerelease: false
           allowUpdates: true
           removeArtifacts: true
-          artifacts: build/songboard-macos.zip
+          artifacts: build/songboard-macos.zip,build/songboard-macos.dmg
