@@ -14,6 +14,18 @@ Use this guide to publish Songboard on Gumroad alongside the GitHub repo.
 - Call-to-action: highlight that the download includes the watcher script and installation guide.
 - Add a short feature list plus tips for running the LaunchAgent.
 
+### Suggested description
+```
+Songboard keeps every music link you copy ready for everyone. Grab a track from Spotify or Apple Music and your clipboard refreshes with a universal Song.link share—perfect for texts, socials, and anywhere your listeners live.
+
+What’s inside:
+- Songboard clipboard watcher for macOS (Python 3)
+- Guided INSTALLATION.md with LaunchAgent setup
+- Instant Command+C detection with graceful fallback polling
+
+Requires macOS with the system Python 3. Load the included LaunchAgent to keep Songboard running quietly in the background.
+```
+
 ## 3. Launch
 1. Publish the product and copy the Gumroad link (e.g., `https://willsigmon.gumroad.com/l/songboard`).
 2. Drop the link into the README tip jar or quick-start section.
