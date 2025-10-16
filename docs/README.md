@@ -1,6 +1,6 @@
 ## Docs & Assets
 
-- `social-preview.png`: ready-to-upload 1280×640 GitHub social preview. Set it under **Repository → Settings → General → Social preview**.
-- Drop any additional media (screen recordings, GIFs, etc.) in this folder so everything shareable lives together.
+- `social-preview.png`: curated 1280×640 card for GitHub’s social preview. Upload it via **Repository → Settings → General → Social preview**.
+- Add screen captures, quick demos, or any launch-ready media here so everything shipping with Songboard stays in one place.
 
-Nothing in here is required for the watcher to run; it just keeps repo visuals organized.
+Nothing in this folder is required for the watcher to run—it simply keeps the storytelling assets together.

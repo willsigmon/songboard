@@ -2,25 +2,25 @@
 
 ![Platform](https://img.shields.io/badge/platform-macOS-black?style=flat-square) ![Python](https://img.shields.io/badge/python-3%2B-blue?style=flat-square) ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 
-Turn every Spotify or Apple Music URL you copy into a universal [Song.link](https://song.link) share in a blink. Songboard watches your clipboard so you can drop perfect, platform-agnostic links anywhere—texts, tweets, group chats, you name it.
+Songboard keeps every music link you copy ready for everyone. Grab a track from Spotify or Apple Music and your clipboard refreshes with a universal [Song.link](https://song.link) share—perfect for texts, socials, and anywhere your listeners are.
 
-> 🎉 Built for creators, curators, and anyone tired of “do you have this on *my* streaming service?”
+> Crafted for curators, artists, and friends who want sharing to feel native on macOS.
 
 ![Songboard social preview](docs/social-preview.png)
 
 ---
 
-## ✨ What you get
-- Instant Song.link conversion for Spotify, Apple Music, iTunes, and geo.apple domains
-- Hands-free background agent that launches at login and stays invisible
-- Safe retries and loop protection so your clipboard never flips back and forth
-- Tiny, dependency-free Python script (fits anywhere)
+## ✨ Designed for the way you share
+- macOS-first experience that runs quietly in the background and relaunches at login
+- Instant Song.link conversion for Spotify, Apple Music, iTunes, and geo.apple links
+- Clipboard protection that avoids loops and keeps your original copy safe if anything fails
+- Lightweight, dependency-free Python script you can read in a single glance
 
 ---
 
-## 🚀 Quick start
+## 🚀 Set up in minutes
 
-> Requires macOS with Python 3 (preinstalled on modern macOS versions).
+> Requires macOS with Python 3 (preinstalled on current macOS versions).
 
 ```bash
 # 1. Drop the watcher script on your machine
@@ -60,10 +60,10 @@ Copy any Spotify or Apple Music track URL. Your clipboard immediately holds `htt
 
 ---
 
-## 🧠 Pro tips
-- Pause the agent with `launchctl unload ~/Library/LaunchAgents/com.songlink.clipboard.plist` and reload when you’re ready again.
-- Want to watch other services? Update `SONG_DOMAINS` in `songlink_clipboard_watcher.py`.
-- For debugging, tail `/tmp/songlink.err` while you test new changes.
+## 🧠 macOS tips
+- Pause Songboard dynamically with `launchctl unload ~/Library/LaunchAgents/com.songlink.clipboard.plist`; reload when you want it back.
+- Extend coverage by adding domains to `SONG_DOMAINS` inside `songlink_clipboard_watcher.py`.
+- Need insight? Tail `/tmp/songlink.err` while you iterate.
 
 ---
 
@@ -78,9 +78,9 @@ Peek at the full walkthrough in [`songlink-setup.md`](songlink-setup.md) for ext
 ---
 
 ## 📸 Share-ready assets
-- Upload `docs/social-preview.png` as the GitHub social preview (Settings → General → Social preview) and reuse it anywhere you share Songboard.
-- Suggested caption: *“Songboard auto-turns every music link I copy into a universal Song.link URL. One click, every streaming service. Grab it here → https://github.com/willsigmon/songboard.”*
-- Want motion? Drop a 5–10 second screen recording into `docs/` and link it from the README or your post.
+- Upload `docs/social-preview.png` as the GitHub social preview (Settings → General → Social preview) and bring the same image to your social launch.
+- Suggested caption: *Songboard instantly turns every music link I copy into a universal Song.link page. One copy, every streaming service. https://github.com/willsigmon/songboard*
+- Demonstration clips or GIFs live well inside `docs/`—link them from the README or your announcement post.
 
 ---
 
