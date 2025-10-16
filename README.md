@@ -84,6 +84,15 @@ Peek at the full walkthrough in [`songlink-setup.md`](songlink-setup.md) for ext
 
 ---
 
+## ❤️ Tip jar
+Like Songboard? Fuel the caffeine.
+
+- [PayPal](https://www.paypal.com/paypalme/wsig)
+- [Venmo](https://account.venmo.com/u/willsigmon)
+- [Cash App](https://cash.app/$WSig)
+
+---
+
 ## 🗺️ Roadmap ideas
 - Optional menu bar indicator
 - Global keyboard shortcut to toggle the watcher
