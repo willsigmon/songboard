@@ -6,7 +6,7 @@ Use this guide to publish Songboard on Gumroad alongside the GitHub repo.
 1. Sign in to Gumroad and click **Products → New product**.
 2. Choose **Digital product** and give it a name (e.g., “Songboard for macOS”).
 3. Set the price to **$0+** so supporters can pay what they want.
-4. Add a download file by URL and paste `https://willsigmon.github.io/songboard/songboard-macos.zip`. This bundle is rebuilt automatically on every push to `main`.
+4. Add a download file by URL and paste `https://github.com/willsigmon/songboard/releases/download/bundle/songboard-macos.zip`. This bundle is rebuilt automatically on every push to `main`.
 
 ## 2. Polish the page
 - Cover image: reuse `docs/social-preview.png`.
