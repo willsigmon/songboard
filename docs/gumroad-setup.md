@@ -16,7 +16,7 @@ Use this guide to publish Songboard on Gumroad alongside the GitHub repo.
 
 ### Suggested description
 ```
-Songboard keeps every music link you copy ready for everyone. Grab a track from Spotify or Apple Music and your clipboard refreshes with a universal Song.link share—perfect for texts, socials, and anywhere your listeners live.
+Songboard keeps every music link you copy ready for everyone. Grab a track from Spotify, Apple Music, YouTube, Tidal, Amazon Music, Deezer, SoundCloud, or Bandcamp and your clipboard refreshes with a universal Song.link share—perfect for texts, socials, and anywhere your listeners live.
 
 What’s inside:
 - Songboard clipboard watcher for macOS (Python 3)

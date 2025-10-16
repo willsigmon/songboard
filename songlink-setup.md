@@ -1,6 +1,6 @@
 # Song.link Clipboard Watcher for macOS
 
-Auto-converts Spotify/Apple Music links to universal Song.link URLs on your clipboard.
+Auto-converts popular music links (Spotify, Apple Music, YouTube, Tidal, etc.) to universal Song.link URLs on your clipboard.
 
 ## Installation
 
@@ -15,7 +15,7 @@ Or manually save this as `~/Scripts/songlink_clipboard_watcher.py`:
 
 ```python
 #!/usr/bin/env python3
-"""Watch the macOS clipboard and replace Spotify/Apple Music track URLs with Song.link."""
+"""Watch the macOS clipboard and replace music streaming URLs with Song.link."""
 from __future__ import annotations
 
 import subprocess
@@ -30,11 +30,33 @@ from typing import Optional
 POLL_INTERVAL_SECONDS = 0.2
 COPY_PROCESS_DELAY_SECONDS = 0.05
 COPY_KEYCODE = 8  # macOS virtual keycode for the "c" key on ANSI layouts.
-SONG_DOMAINS = (
+SONG_HOSTS = {
     "open.spotify.com",
+    "play.spotify.com",
     "music.apple.com",
     "geo.music.apple.com",
     "itunes.apple.com",
+    "music.youtube.com",
+    "www.youtube.com",
+    "m.youtube.com",
+    "youtu.be",
+    "listen.tidal.com",
+    "tidal.com",
+    "www.deezer.com",
+    "deezer.com",
+    "m.deezer.com",
+    "soundcloud.com",
+    "m.soundcloud.com",
+    "www.soundcloud.com",
+    "music.amazon.com",
+    "music.amazon.co.uk",
+    "music.amazon.ca",
+}
+SONG_HOST_PREFIXES = (
+    "music.amazon.",
+)
+SONG_HOST_SUFFIXES = (
+    ".bandcamp.com",
 )
 
 
@@ -79,13 +101,22 @@ def write_clipboard(value: str) -> None:
 
 
 def looks_like_music_link(value: str) -> bool:
-    """True if the clipboard text is a Spotify or Apple Music link we want to rewrite."""
+    """True if the clipboard text is a music link we want to rewrite."""
     if not value.startswith("http"):
         return False
     if value.startswith("https://song.link"):
         return False
     parsed = urllib.parse.urlparse(value)
-    return parsed.netloc in SONG_DOMAINS
+    host = parsed.netloc.split(":")[0].lower()
+    if host in SONG_HOSTS:
+        return True
+    for prefix in SONG_HOST_PREFIXES:
+        if host.startswith(prefix):
+            return True
+    for suffix in SONG_HOST_SUFFIXES:
+        if host.endswith(suffix):
+            return True
+    return False
 
 
 def convert_to_songlink(value: str) -> str:
@@ -290,7 +321,7 @@ rm ~/Scripts/songlink_clipboard_watcher.py
 
 ## How it works
 - Listens for Command+C events via the macOS Accessibility API (with a 0.2 s polling fallback)
-- Detects Spotify, Apple Music, or iTunes URLs
+- Detects major streaming links (Spotify, Apple Music, YouTube, Tidal, Amazon Music, Deezer, SoundCloud, Bandcamp, and more)
 - Converts them to universal `song.link/...` format
 - Works transparently—just copy a music link and it auto-converts
 

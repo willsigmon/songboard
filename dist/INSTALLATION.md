@@ -45,7 +45,7 @@ launchctl load ~/Library/LaunchAgents/com.songlink.clipboard.plist
 
 > On first launch, macOS may prompt you to allow `/usr/bin/python3` (Songboard) under **System Settings → Privacy & Security → Accessibility**. Approve it to enable instant Command+C detection. If you skip the prompt, Songboard falls back to a gentle polling mode.
 
-Songboard now watches your clipboard. Copy any Spotify or Apple Music link; it instantly becomes a universal `https://song.link/...` URL.
+Songboard now watches your clipboard. Copy any supported music link (Spotify, Apple Music, YouTube, Tidal, Amazon Music, Deezer, SoundCloud, Bandcamp, etc.) and it instantly becomes a universal `https://song.link/...` URL.
 
 ## Troubleshooting
 - Pause Songboard: `launchctl unload ~/Library/LaunchAgents/com.songlink.clipboard.plist`

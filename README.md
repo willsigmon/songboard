@@ -12,7 +12,7 @@ Songboard keeps every music link you copy ready for everyone. Grab a track from 
 
 ## ✨ Designed for the way you share
 - macOS-first experience that runs quietly in the background and relaunches at login
-- Instant Song.link conversion for Spotify, Apple Music, iTunes, and geo.apple links
+- Instant Song.link conversion for Spotify, Apple Music, YouTube (Music), Tidal, Amazon Music, Deezer, SoundCloud, Bandcamp, and more
 - Clipboard protection that avoids loops and keeps your original copy safe if anything fails
 - Lightweight, dependency-free Python script you can read in a single glance
 
@@ -66,7 +66,7 @@ Copy any Spotify or Apple Music track URL. Your clipboard immediately holds `htt
 ## 🧠 macOS tips
 - On first launch, macOS may prompt you to allow `/usr/bin/python3` (Songboard) under **System Settings → Privacy & Security → Accessibility**. Approve it to enable instant Command+C triggers; decline and Songboard simply falls back to gentle polling.
 - Pause Songboard dynamically with `launchctl unload ~/Library/LaunchAgents/com.songlink.clipboard.plist`; reload when you want it back.
-- Extend coverage by adding domains to `SONG_DOMAINS` inside `songlink_clipboard_watcher.py`.
+- Extend coverage by adding hosts to `SONG_HOSTS`, `SONG_HOST_PREFIXES`, or `SONG_HOST_SUFFIXES` inside `songlink_clipboard_watcher.py`.
 - Need insight? Tail `/tmp/songlink.err` while you iterate.
 
 ---
