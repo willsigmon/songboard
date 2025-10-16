@@ -63,6 +63,7 @@ Copy any Spotify or Apple Music track URL. Your clipboard immediately holds `htt
 ---
 
 ## 🧠 macOS tips
+- On first launch, macOS may prompt you to allow `/usr/bin/python3` (Songboard) under **System Settings → Privacy & Security → Accessibility**. Approve it to enable instant Command+C triggers; decline and Songboard simply falls back to gentle polling.
 - Pause Songboard dynamically with `launchctl unload ~/Library/LaunchAgents/com.songlink.clipboard.plist`; reload when you want it back.
 - Extend coverage by adding domains to `SONG_DOMAINS` inside `songlink_clipboard_watcher.py`.
 - Need insight? Tail `/tmp/songlink.err` while you iterate.

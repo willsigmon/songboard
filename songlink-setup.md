@@ -22,11 +22,14 @@ import subprocess
 import sys
 import time
 import urllib.parse
-from dataclasses import dataclass
+import threading
+from dataclasses import dataclass, field
 from typing import Optional
 
 
 POLL_INTERVAL_SECONDS = 0.2
+COPY_PROCESS_DELAY_SECONDS = 0.05
+COPY_KEYCODE = 8  # macOS virtual keycode for the "c" key on ANSI layouts.
 SONG_DOMAINS = (
     "open.spotify.com",
     "music.apple.com",
@@ -39,6 +42,12 @@ SONG_DOMAINS = (
 class ClipboardState:
     last_seen_value: Optional[str] = None
     last_converted_source: Optional[str] = None
+    pending_timer: Optional[threading.Timer] = field(default=None, repr=False, compare=False)
+
+
+def log(message: str) -> None:
+    """Emit a lightweight log line to stderr."""
+    print(f"[songboard] {message}", file=sys.stderr)
 
 
 def read_clipboard() -> str:
@@ -85,45 +94,130 @@ def convert_to_songlink(value: str) -> str:
     return f"https://song.link/{encoded}"
 
 
-def run_loop() -> None:
-    state = ClipboardState()
-    while True:
+def process_clipboard(state: ClipboardState) -> None:
+    """Read the clipboard and convert supported music links."""
+    try:
+        current = read_clipboard()
+    except Exception:
+        return
+
+    if current == state.last_seen_value:
+        return
+    state.last_seen_value = current
+
+    if looks_like_music_link(current):
+        # Avoid flip-flopping if we already processed this exact source URL.
+        if current == state.last_converted_source:
+            return
+
+        song_link = convert_to_songlink(current)
         try:
-            current = read_clipboard()
+            write_clipboard(song_link)
         except Exception:
-            time.sleep(POLL_INTERVAL_SECONDS)
-            continue
+            # If we fail to write, try again next loop.
+            state.last_seen_value = None
+            return
 
-        if current == state.last_seen_value:
-            time.sleep(POLL_INTERVAL_SECONDS)
-            continue
-        state.last_seen_value = current
+        state.last_seen_value = song_link
+        state.last_converted_source = current
 
-        if looks_like_music_link(current):
-            # Avoid flip-flopping if we already processed this exact source URL.
-            if current == state.last_converted_source:
-                time.sleep(POLL_INTERVAL_SECONDS)
-                continue
 
-            song_link = convert_to_songlink(current)
-            try:
-                write_clipboard(song_link)
-            except Exception:
-                # If we fail to write, try again next loop.
-                state.last_seen_value = None
-                time.sleep(POLL_INTERVAL_SECONDS)
-                continue
+def schedule_clipboard_processing(state: ClipboardState) -> None:
+    """Schedule a clipboard check shortly after a copy event fires."""
+    if state.pending_timer and state.pending_timer.is_alive():
+        return
 
-            state.last_seen_value = song_link
-            state.last_converted_source = current
+    def _run() -> None:
+        state.pending_timer = None
+        process_clipboard(state)
 
+    timer = threading.Timer(COPY_PROCESS_DELAY_SECONDS, _run)
+    timer.daemon = True
+    timer.start()
+    state.pending_timer = timer
+
+
+def run_event_listener(state: ClipboardState) -> bool:
+    """Listen for Command+C key presses via an event tap. Returns True if running."""
+    try:
+        import Quartz
+    except ImportError:
+        log("Quartz framework unavailable; falling back to timed polling.")
+        return False
+
+    event_tap = None
+
+    def callback(proxy, type_, event, refcon):
+        nonlocal event_tap
+        if type_ in (
+            Quartz.kCGEventTapDisabledByTimeout,
+            Quartz.kCGEventTapDisabledByUserInput,
+        ):
+            Quartz.CGEventTapEnable(event_tap, True)
+            return event
+        if type_ != Quartz.kCGEventKeyDown:
+            return event
+
+        flags = Quartz.CGEventGetFlags(event)
+        if not (flags & Quartz.kCGEventFlagMaskCommand):
+            return event
+
+        keycode = Quartz.CGEventGetIntegerValueField(
+            event, Quartz.kCGKeyboardEventKeycode
+        )
+        if keycode == COPY_KEYCODE:
+            schedule_clipboard_processing(state)
+        return event
+
+    event_mask = 1 << Quartz.kCGEventKeyDown
+    event_tap = Quartz.CGEventTapCreate(
+        Quartz.kCGSessionEventTap,
+        Quartz.kCGHeadInsertEventTap,
+        Quartz.kCGEventTapOptionDefault,
+        event_mask,
+        callback,
+        None,
+    )
+
+    if event_tap is None:
+        log(
+            "Unable to access Command+C events. Grant accessibility permissions or "
+            "allow the first prompt, then restart Songboard."
+        )
+        return False
+
+    run_loop_source = Quartz.CFMachPortCreateRunLoopSource(None, event_tap, 0)
+    Quartz.CFRunLoopAddSource(
+        Quartz.CFRunLoopGetCurrent(),
+        run_loop_source,
+        Quartz.kCFRunLoopCommonModes,
+    )
+    Quartz.CGEventTapEnable(event_tap, True)
+    log("Listening for Command+C events. (You may be prompted for Accessibility access.)")
+
+    try:
+        Quartz.CFRunLoopRun()
+    except KeyboardInterrupt:
+        sys.exit(0)
+
+    return True
+
+
+def run_polling(state: ClipboardState) -> None:
+    """Fallback loop that polls the clipboard at a fixed interval."""
+    while True:
+        process_clipboard(state)
         time.sleep(POLL_INTERVAL_SECONDS)
 
 
 def main() -> None:
+    state = ClipboardState()
+    if run_event_listener(state):
+        return
+
     while True:
         try:
-            run_loop()
+            run_polling(state)
         except KeyboardInterrupt:
             sys.exit(0)
         except Exception:
@@ -168,6 +262,8 @@ This plist uses `$USER` so it is portable across accounts.
 launchctl load ~/Library/LaunchAgents/com.songlink.clipboard.plist
 ```
 
+> On first launch, macOS may ask you to allow `/usr/bin/python3` under **System Settings → Privacy & Security → Accessibility**. Approve it to unlock instant Command+C detection. If you decline, Songboard falls back to a gentle 0.2 s polling loop.
+
 ## Verify it's running
 ```bash
 ps aux | grep songlink_clipboard_watcher
@@ -193,7 +289,7 @@ rm ~/Scripts/songlink_clipboard_watcher.py
 ```
 
 ## How it works
-- Polls clipboard every 0.2 seconds
+- Listens for Command+C events via the macOS Accessibility API (with a 0.2 s polling fallback)
 - Detects Spotify, Apple Music, or iTunes URLs
 - Converts them to universal `song.link/...` format
 - Works transparently—just copy a music link and it auto-converts
