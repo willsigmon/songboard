@@ -1,8 +1,12 @@
 # Songboard · Song.link Clipboard Watcher for macOS
 
+![Platform](https://img.shields.io/badge/platform-macOS-black?style=flat-square) ![Python](https://img.shields.io/badge/python-3%2B-blue?style=flat-square) ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
+
 Turn every Spotify or Apple Music URL you copy into a universal [Song.link](https://song.link) share in a blink. Songboard watches your clipboard so you can drop perfect, platform-agnostic links anywhere—texts, tweets, group chats, you name it.
 
 > 🎉 Built for creators, curators, and anyone tired of “do you have this on *my* streaming service?”
+
+![Songboard social preview](docs/social-preview.png)
 
 ---
 
@@ -74,8 +78,9 @@ Peek at the full walkthrough in [`songlink-setup.md`](songlink-setup.md) for ext
 ---
 
 ## 📸 Share-ready assets
-- Drop a screenshot or screen recording in `docs/social-preview.png` and set it as your GitHub social preview (Repository Settings → General → Social preview).
-- Suggested caption: *“Songboard auto-turns every music link I copy into a universal Song.link URL. One click, every streaming service. Grab it here → https://github.com/willsigmon/songboard”*
+- Upload `docs/social-preview.png` as the GitHub social preview (Settings → General → Social preview) and reuse it anywhere you share Songboard.
+- Suggested caption: *“Songboard auto-turns every music link I copy into a universal Song.link URL. One click, every streaming service. Grab it here → https://github.com/willsigmon/songboard.”*
+- Want motion? Drop a 5–10 second screen recording into `docs/` and link it from the README or your post.
 
 ---
 
