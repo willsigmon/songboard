@@ -1,22 +1,32 @@
-# Song.link Clipboard Watcher for macOS
+# Songboard · Song.link Clipboard Watcher for macOS
 
-Auto-converts Spotify/Apple Music links to universal Song.link URLs on your clipboard.
+Turn every Spotify or Apple Music URL you copy into a universal [Song.link](https://song.link) share in a blink. Songboard watches your clipboard so you can drop perfect, platform-agnostic links anywhere—texts, tweets, group chats, you name it.
 
-## Installation
+> 🎉 Built for creators, curators, and anyone tired of “do you have this on *my* streaming service?”
 
-### 1. Save the script
+---
+
+## ✨ What you get
+- Instant Song.link conversion for Spotify, Apple Music, iTunes, and geo.apple domains
+- Hands-free background agent that launches at login and stays invisible
+- Safe retries and loop protection so your clipboard never flips back and forth
+- Tiny, dependency-free Python script (fits anywhere)
+
+---
+
+## 🚀 Quick start
+
+> Requires macOS with Python 3 (preinstalled on modern macOS versions).
+
 ```bash
+# 1. Drop the watcher script on your machine
 mkdir -p ~/Scripts
 curl -o ~/Scripts/songlink_clipboard_watcher.py https://raw.githubusercontent.com/willsigmon/songboard/main/songlink_clipboard_watcher.py
 chmod +x ~/Scripts/songlink_clipboard_watcher.py
-```
 
-Or copy `songlink_clipboard_watcher.py` to `~/Scripts/`.
-
-### 2. Create a LaunchAgent (auto-start on login)
-```bash
+# 2. Install a LaunchAgent so it auto-starts on login
 mkdir -p ~/Library/LaunchAgents
-cat > ~/Library/LaunchAgents/com.songlink.clipboard.plist << 'EOF'
+cat > ~/Library/LaunchAgents/com.songlink.clipboard.plist <<'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -26,7 +36,7 @@ cat > ~/Library/LaunchAgents/com.songlink.clipboard.plist << 'EOF'
     <key>ProgramArguments</key>
     <array>
         <string>/usr/bin/python3</string>
-        <string>/Users/YOUR_USERNAME/Scripts/songlink_clipboard_watcher.py</string>
+        <string>/Users/$USER/Scripts/songlink_clipboard_watcher.py</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
@@ -37,43 +47,47 @@ cat > ~/Library/LaunchAgents/com.songlink.clipboard.plist << 'EOF'
 </dict>
 </plist>
 EOF
-```
 
-Replace `YOUR_USERNAME` with your actual username.
-
-### 3. Load the LaunchAgent
-```bash
+# 3. Fire it up
 launchctl load ~/Library/LaunchAgents/com.songlink.clipboard.plist
 ```
 
-## Verify it's running
-```bash
-ps aux | grep songlink_clipboard_watcher
-```
+Copy any Spotify or Apple Music track URL. Your clipboard immediately holds `https://song.link/...` ready to share everywhere.
 
-## Stop/Start/Uninstall
+---
 
-**Stop running:**
-```bash
-launchctl unload ~/Library/LaunchAgents/com.songlink.clipboard.plist
-```
+## 🧠 Pro tips
+- Pause the agent with `launchctl unload ~/Library/LaunchAgents/com.songlink.clipboard.plist` and reload when you’re ready again.
+- Want to watch other services? Update `SONG_DOMAINS` in `songlink_clipboard_watcher.py`.
+- For debugging, tail `/tmp/songlink.err` while you test new changes.
 
-**Start again:**
-```bash
-launchctl load ~/Library/LaunchAgents/com.songlink.clipboard.plist
-```
+---
 
-**Uninstall completely:**
-```bash
-launchctl unload ~/Library/LaunchAgents/com.songlink.clipboard.plist
-rm ~/Library/LaunchAgents/com.songlink.clipboard.plist
-rm ~/Scripts/songlink_clipboard_watcher.py
-```
+## 💡 Behind the scenes
+- Polls the clipboard every 200 ms using `pbpaste`/`pbcopy`
+- Guards against double-processing so you don’t lose the original link
+- Retries gracefully if macOS rejects a clipboard write
+- Lives in [`songlink_clipboard_watcher.py`](songlink_clipboard_watcher.py) (≈120 lines)
 
-## How it works
-- Polls clipboard every 0.2 seconds
-- Detects Spotify, Apple Music, or iTunes URLs
-- Converts them to universal `song.link/...` format
-- Works transparently—just copy a music link and it auto-converts
+Peek at the full walkthrough in [`songlink-setup.md`](songlink-setup.md) for extra installation context and uninstall instructions.
 
-Enjoy universal music links! 🎵
+---
+
+## 📸 Share-ready assets
+- Drop a screenshot or screen recording in `docs/social-preview.png` and set it as your GitHub social preview (Repository Settings → General → Social preview).
+- Suggested caption: *“Songboard auto-turns every music link I copy into a universal Song.link URL. One click, every streaming service. Grab it here → https://github.com/willsigmon/songboard”*
+
+---
+
+## 🗺️ Roadmap ideas
+- Optional menu bar indicator
+- Global keyboard shortcut to toggle the watcher
+- Support for YouTube Music, Tidal, and Amazon Music
+
+Open an issue or submit a PR if you want to help push these forward.
+
+---
+
+## 📝 License
+
+Released under the [MIT License](LICENSE). Have fun, share broadly, and let us know where you drop your first universal link!
