@@ -22,6 +22,8 @@ Songboard keeps every music link you copy ready for everyone. Grab a track from 
 
 > Requires macOS with Python 3 (preinstalled on current macOS versions).
 
+- Prefer a packaged download? Grab the Gumroad bundle: [Songboard on Gumroad](https://willsigmon.gumroad.com/l/songboard). It ships with the script and step-by-step install guide.
+
 ```bash
 # 1. Drop the watcher script on your machine
 mkdir -p ~/Scripts
@@ -81,6 +83,7 @@ Peek at the full walkthrough in [`songlink-setup.md`](songlink-setup.md) for ext
 - Upload `docs/social-preview.png` as the GitHub social preview (Settings → General → Social preview) and bring the same image to your social launch.
 - Suggested caption: *Songboard instantly turns every music link I copy into a universal Song.link page. One copy, every streaming service. https://github.com/willsigmon/songboard*
 - Demonstration clips or GIFs live well inside `docs/`—link them from the README or your announcement post.
+- Planning a Gumroad launch? Follow [`docs/gumroad-setup.md`](docs/gumroad-setup.md) for the exact steps and assets.
 
 ---
 
